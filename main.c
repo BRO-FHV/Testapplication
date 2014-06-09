@@ -1,13 +1,16 @@
-
-#include <Console/lib_console.h>
 /*
+#include <Console/lib_console.h>
+#include <inttypes.h>
+
  * main.c
  */
-int main(void) {
-	int i = 0;
+void main() {
+	/*
+	uint8_t i = 0;
 	while(i < 1000){
 		i = i + 1;
-		lib_print("New int: %d", i);
+		//lib_print("New int: %d", i);
 	}
-	return 0;
+	*/
+	while(1){}
 }
