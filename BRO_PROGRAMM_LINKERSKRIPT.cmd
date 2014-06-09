@@ -17,7 +17,7 @@
 
 MEMORY
 {
-    ext_ddr:    o = 0x81002000  l = 0x40000000		/* internal ram 128MB */
+    ext_ddr:    o = 0x81000000  l = 0x30000000		/* internal ram 128MB */
 }
 
 SECTIONS
