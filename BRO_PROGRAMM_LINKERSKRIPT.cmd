@@ -8,26 +8,43 @@
  * Basic linker options
  */
 
-/* heap and stack sizes */
--stack           0x00002000
--heap            0x00F00000
 
 /* supress warning _c_int00 entry point */
 --diag_suppress=10063
 
+-stack           0x00002000
+-heap            0x00004000
+
 MEMORY
 {
-    ext_ddr:    o = 0x81000000  l = 0x10000000		/* internal ram 128MB */
+   stack_memory:     ORIGIN 0x81000000 LENGTH = 0x00002000
+   virtual_memory:       ORIGIN 0x81002000 LENGTH = 0x01000000
+   sysmem_memory:      ORIGIN 0x82002000 LENGTH = 0x00004000
 }
 
 SECTIONS
 {
-  	.const      > ext_ddr
-	.data       > ext_ddr
-	.text       > ext_ddr
+   ORDER
+   .stack      > stack_memory
 
-	.cinit		> ext_ddr
+   .text       > virtual_memory
 
-	.heap		> ext_ddr
-	.stack      > ext_ddr
+   .bss        > virtual_memory
+   .const      > virtual_memory
+   .cinit      > virtual_memory
+   .pinit      > virtual_memory
+   .cio        > virtual_memory
+   .switch     > virtual_memory
+   .far        > virtual_memory
+   .data       > virtual_memory
+   .switch     > virtual_memory
+   .init_array > virtual_memory
+
+
+
+
+   .sysmem     > sysmem_memory
+
+
+
 }
