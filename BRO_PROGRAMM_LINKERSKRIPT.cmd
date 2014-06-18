@@ -15,6 +15,9 @@
 -stack           0x00002000
 -heap            0x00004000
 
+/* set entry point to boot asm (boot.asm) func */
+-e boot
+
 MEMORY
 {
    stack_memory:     ORIGIN 0x81000000 LENGTH = 0x00002000
@@ -22,10 +25,14 @@ MEMORY
    sysmem_memory:      ORIGIN 0x82002000 LENGTH = 0x00004000
 }
 
+
+
 SECTIONS
 {
    ORDER
-   .stack      > stack_memory
+     .stack      > stack_memory  {
+      systemStack = .;
+   }
 
    .text       > virtual_memory
 
