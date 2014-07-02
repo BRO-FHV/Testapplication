@@ -2,15 +2,12 @@
 #include <Eth/lib_eth.h>
 #include <stdlib/stdlib.h>
 #include <lib_basic.h>
-#include <inttypes.h>
 
 #define PORT					2000
+#define LENGTH_USERNAME 		7 //Byte
+#define CMD_LED					1
 
 uint8_t BROADCAST_IP[] = { 255, 255, 255, 255 };
-
-#define LENGTH_USERNAME 		7 //Byte
-
-#define CMD_LED					1
 
 typedef struct {
 	uint8_t username[LENGTH_USERNAME];
@@ -26,12 +23,12 @@ typedef struct {
 /*
  * main.c
  */
-void main() {
-	SwiUdpInit(PORT);
+int main(void) {
+	lib_udp_init(PORT);
 
 	while (1) {
-		if (SwiUdpHasData(PORT)) {
-			swi_udp_package_t* package = SwiUdpGetData(PORT);
+		if (lib_udp_has_data(PORT)) {
+			lib_udp_package_t* package = lib_udp_get_data(PORT);
 			tCmd* command = (tCmd*) (package->data);
 
 			if (CMD_LED == command->cmd) {
@@ -39,29 +36,22 @@ void main() {
 
 				if (ledCmd->led >= 1 && ledCmd->led <= 4) {
 					switch (ledCmd->led) {
-					case 1:
-						if(ledCmd->state) {
-							lib_led_on_0();
-						} else {
-							lib_led_off_0();
-						}
-						break;
 					case 2:
-						if(ledCmd->state) {
+						if (ledCmd->state) {
 							lib_led_on_1();
 						} else {
 							lib_led_off_1();
 						}
 						break;
 					case 3:
-						if(ledCmd->state) {
+						if (ledCmd->state) {
 							lib_led_on_2();
 						} else {
 							lib_led_off_2();
 						}
 						break;
 					case 4:
-						if(ledCmd->state) {
+						if (ledCmd->state) {
 							lib_led_on_3();
 						} else {
 							lib_led_off_3();
@@ -70,7 +60,7 @@ void main() {
 					}
 
 					//BROADCAST TO ALL LISTENERS
-					SwiUdpSendData(BROADCAST_IP, PORT, package->data, package->len);
+					lib_udp_send_data(BROADCAST_IP, PORT, package->data, package->len);
 				}
 			}
 
